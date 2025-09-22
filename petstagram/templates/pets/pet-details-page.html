@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
 
+{% block content %}
     <div class="pet-profile">
         <!-- Start Pet Personal Data Section -->
         <div class="profile">
@@ -9,26 +9,26 @@
                 <div class="profile_img">
                     <div class="image">
                         <!-- Pet URL Image -->
-                        <img src="#"
+                        <img src="{{ pet.personal_photo }}"
                              alt="img8">
                     </div>
                 </div>
                 <div class="personal">
                     <div class="edit">
                         <!-- Pet Name -->
-                        <p>Rex</p>
+                        <p>{{ pet.name }}</p>
                         <!-- Pet Edit Button -->
-                        <a href="#">
-                            <img class="edit-img" src="{% static 'images/edit-pen-icon-6.jpg' %}" alt="edit button">
+                        <a href="{% url 'edit-pet' "username" pet.slug %}">
+                            <img class="edit-img" src="/static/images/edit-pen-icon-6.jpg" alt="edit button">
                         </a>
                         <!-- Pet Delete Button -->
-                        <a href="#">
-                            <img class="bin-img" src="{% static 'images/icon-remove-22.jpg' %}" alt="bin button">
+                        <a href="{% url 'delete-pet' "username" pet.slug %}">
+                            <img class="bin-img" src="/static/images/icon-remove-22.jpg" alt="bin button">
                         </a>
-                    </div>
+                    </div>     
                     <div class="data">
                         <!-- Pet Total Photos -->
-                        <span>125</span>
+                        <span>{{ all_photos.count }}</span>
                         <p>photos</p>
                     </div>
                 </div>
@@ -37,9 +37,13 @@
         <!-- End Pet Personal Data Section -->
         <div class="pet-posts">
 
-                {% include 'common/pet-posts.html' %}
-
+            {% if all_photos %}
+                {% include 'common/pets-posts.html' %}
+                <!-- IF Photos End Pet Photos Post Section -->
+            {% else %}
+                <!-- IF NOT Photos Show No Post Image -->
                 <img class="no-posts" src="{% static '/images/no_posts.png' %}" alt="no posts image">
+            {% endif %}
         </div>
     </div>
 
