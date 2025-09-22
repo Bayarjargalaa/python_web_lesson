@@ -1,0 +1,65 @@
+{% for photo in all_photos %}
+...
+        <!-- Start User Details and Image Location -->
+...
+                    <!-- if the photo has location -->
+                    {% if photo.location %}
+                        <span>{{ photo.location }}</span>
+                    {% endif %}
+...
+        <!-- End User Details and Image Location -->
+...
+            <!-- Start Tagged Pets -->
+            {% for pet in photo.tagged_pets.all %}
+                <!-- Link to First Tagged Pet Details Page-->
+                <a href="{% url 'pet-details' "username" pet.slug %}">
+                    <p class="message">
+                        <b>{{ pet.name }}</b>
+                    </p>
+                </a>
+            {% endfor %}
+            <!-- End Tagged Pets -->
+
+            <!-- Link to Photo Details Page -->
+            <a href="{% url 'photo-details' photo.pk %}">
+                <h4 class="details">See details</h4>
+            </a>
+
+            <!-- Date of Publication -->
+            <h5 class="postTime">{{ photo.date_of_publication }}</h5>
+            ...
+<!-- Start Like and Share Buttons -->
+<div class="bottom">
+    <div class="actionBtns">
+        <div class="left">
+            <!-- Start Like Button -->
+            <span class="heart">
+                <a href="{% url 'like' photo.id %}">
+                     <!-- if user has liked the photo -->
+                      {% if photo.like_set.all %}
+                          <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
+
+                      <!-- else -->
+                       {% else %}
+                           <i class="fa-regular fa-heart"></i>
+                       {% endif %}                   
+                            ...
+              <!-- End Like Button -->
+               </a>
+            </span>
+<!-- End Like and Share Buttons -->
+        </div>
+    </div>
+</div>
+<!-- Number of Likes per Photo -->
+<p class="likes">{{ photo.like_set.count }} likes</p>
+
+<!-- Start Share Button -->
+<a href="{% url 'share' photo.id %}">
+    <i class="fa-solid fa-share"></i>
+</a>
+<!-- End Share Button -->
+
+
+{% endfor %}
+
