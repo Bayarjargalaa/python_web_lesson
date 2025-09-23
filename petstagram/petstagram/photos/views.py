@@ -1,17 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from petstagram.photos.forms import PhotoCreateForm
 from petstagram.photos.models import Photo
 # Create your views here.
 def photo_add(request):
-    if request.method == 'POST':
-        form = PhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            photo = form.save()
-            return redirect('photo_details', photo.pk)
-    else:
-        form = PhotoForm()
-
-    return render(request, 'photos/photo-add-page.html', {'form': form})
+    form = PhotoCreateForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save()
+        return redirect('home')
+    context={
+        'form':form,
+    }
+    return render(request, template_name='photos/photo-add-page.html', context=context)
 
 def photo_details(request, pk):
     photo=Photo.objects.get(pk=pk,)
@@ -24,8 +24,10 @@ def photo_details(request, pk):
     }
     return render(request, template_name='photos/photo-details-page.html', context=context)
 
-def photo_edit(request):
+def photo_edit(request, pk):
     return None
 
-def delete_profile(request):
-    return None
+def photo_delete(request, pk):
+    photo=Photo.objects.get(pk=pk,)
+    photo.delete()
+    return redirect('home')

@@ -2,15 +2,17 @@
 {% load static %}
 
 {% block content %}
+    <!--  Start Add Photo Section  -->
     <div class="edit-delete edit-photo">
-        <h2>Add Pet</h2>
+        <h2>Add Photo</h2>
 
             <!-- Start Add Pet Form -->
         <form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Add Pet</button>
+            <button class="add-btn" type="submit">Add Photo</button>
         </form>
-            <!-- End Add Pet Form -->
+            <!-- End Add Photo Form -->
     </div>
+    <!--  End Add Photo Section  -->
 {% endblock %}

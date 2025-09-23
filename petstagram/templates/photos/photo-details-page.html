@@ -42,13 +42,13 @@
             <div class="edit-delete-btns">
 
                 <!-- Link to Edit Pet Photo Page -->
-                <a href="{% url 'edit-photo' photo.pk %}">
+                <a href="{% url 'photo-edit' photo.pk %}">
                     <img class="edit-img" src="{% static '/images/edit-pen-icon-6.jpg' %}"
                          alt="edit button">
                 </a>
 
                 <!-- Link to Delete Pet Photo Page -->
-                <a href="#">
+                <a href="{% url 'photo-delete' photo.pk %}">
                     <img class="bin-img" src="{% static '/images/icon-remove-22.jpg' %}"
                          alt="bin button">
                 </a>
@@ -61,12 +61,13 @@
 
 </div>
 
-<!-- Start Pet Photo -->
-<div class="imgBx" id="place the id of the photo here">
-    <!-- Pet Photo -->
-    <img src="{% static '/images/axolotl.jpeg' %}" alt="post" class="cover">
-</div>
-<!-- End Pet Photo -->
+        <!-- Start Pet Photo -->
+        <div class="imgBox" id="{{photo.id}}">
+            <!-- Pet Photo URL Image -->
+            <img src="{{ photo.photo.url }}"
+                 alt="post image" class="cover">
+        </div>
+        <!-- End Pet Photo -->
 ... 
       <div class="bottom">
 

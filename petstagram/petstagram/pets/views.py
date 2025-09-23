@@ -29,5 +29,8 @@ def edit_pet(request, username, pet_slug):
     return HttpResponse("Edit pet page")
 
 def delete_pet(request, username, pet_slug):
-    from django.http import HttpResponse
-    return HttpResponse("Delete pet page")
+    pet=Pet.objects.get(slug=pet_slug,)
+    if request.method=='POST':
+        pet.delete()
+        return redirect('profile-details', pk=1)
+    
