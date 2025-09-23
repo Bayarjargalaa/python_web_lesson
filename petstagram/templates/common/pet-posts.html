@@ -1,3 +1,21 @@
+{% load static%}
+
+{% comment %} {% for pet in all_pets %}
+    <li class="pet-item">
+        {# Хэрэв pet.pet_photo нь URLField (стринг) use this: #}
+        {% if pet.pet_photo %}
+            <img src="{{ pet.pet_photo }}" alt="{{ pet.name }}" width="150">
+        {% else %}
+            <img src="{% static 'images/default-pet.png' %}" alt="no image" width="150">
+        {% endif %}
+        <div class="pet-meta">
+            <strong>{{ pet.name }}</strong> — Амьтны нэр: {{ pet.owner.username }}
+        </div>
+    </li>
+{% endfor %} {% endcomment %}
+
+
+
 {% for photo in all_photos %}
 <!-- Start User Details and Image Location -->
     <!-- if the photo has location -->
@@ -11,7 +29,7 @@
     <!-- Start Pet Photo -->
     <div class="imgBox" id="{{photo.id}}">
     <!-- Pet Photo URL Image -->
-    <img src="{{ photo.photo.url }}"
+    <img src="{{ photo.url }}"
             alt="post image" class="cover">
     </div>
     <!-- End Pet Photo -->

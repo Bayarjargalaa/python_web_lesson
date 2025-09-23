@@ -3,6 +3,7 @@ from pyperclip import copy
 from petstagram.common.forms import CommentForm, SearchForm
 from petstagram.common.models import Like
 
+from petstagram.pets.models import Pet
 from petstagram.photos.models import Photo
 
 
@@ -12,6 +13,8 @@ def home(request):
     all_photos = Photo.objects.all()
     comment_form = CommentForm()
     search_form=SearchForm(request.GET)
+    all_pets = Pet.objects.all()
+    print(all_pets[1].__dict__)
     
     
     if search_form.is_valid():
@@ -21,6 +24,7 @@ def home(request):
         'all_photos': all_photos,
         'comment_form': comment_form,
         'search_form': search_form,
+        'all_pets': all_pets,
         
     }
     return render(request, template_name='common/home-page.html', context=context)
