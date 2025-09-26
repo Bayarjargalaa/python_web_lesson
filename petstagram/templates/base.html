@@ -45,32 +45,37 @@
                                 <i>Add Photo</i>
                             </a>
                         </li>
-                        <li class="nav-item">
 
-                            <!-- Link to Login Page -->
-                            <a href="{% url 'login_user' %}">
-                                <i>Login</i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-
-                            <!-- Link to Register Page -->
-                            <a href="{% url 'register_user' %}">
-                                <i>Register</i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
 
                             <!-- Link to Profile Page -->
-                            <a href="#">
+                            <a href="{% url 'profile_details' request.user.pk %}">
                                 <i>Profile</i>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#">
+                            <a href="{% url 'logout_user' %}">
                                 <i>Logout</i>
                             </a>
                         </li>
+                        {% else %}
+                        
+                            <li class="nav-item">
+
+                                <!-- Link to Login Page -->
+                                <a href="{% url 'login_user' %}">
+                                    <i>Login</i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+
+                                <!-- Link to Register Page -->
+                                <a href="{% url 'register_user' %}">
+                                    <i>Register</i>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

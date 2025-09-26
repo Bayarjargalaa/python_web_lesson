@@ -6,11 +6,12 @@
             <div class="login-register-box">
                 <h1>Petstagram</h1>
                 <!-- Start Register Form-->
-                <form action="">
-                    <input type="text" placeholder="Username"><br>
-                    <input type="email" placeholder="Email"><br>
-                    <input type="password" placeholder="Password"><br>
-                    <input type="password" placeholder="Repeat Password"><br>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="Username"><br>
+                    <input type="email" name="email" placeholder="Email"><br>
+                    <input type="password" name="password1" placeholder="Password"><br>
+                    <input type="password" name="password2" placeholder="Repeat Password"><br>
                     <!-- Register Button-->
                     <button type="submit">Register</button>
                 </form>
@@ -18,7 +19,7 @@
             </div>
             <div class="second-option"><p>Have an account?
                 <!-- Link to Login Page-->
-                <a href="#">Log in</a></p>
+                <a href="{% url 'login_user' %}">Log in</a></p>
             </div>
         </div>
         <!-- End Register Section-->

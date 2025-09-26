@@ -1,17 +1,73 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from petstagram.accounts.forms import RegisterForm
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from petstagram.accounts.models import UserProfile
+from .forms import EditProfileForm
 
 # Create your views here.
 def register(request):
-    return render(request, template_name='accounts/register-page.html')
+    if request.method == "POST":
+        print("POST keys:", request.POST.keys())
+        form = RegisterForm(request.POST)
+        print("form errors:", form.errors)
+        if form.is_valid():
+            form.save()
+            return redirect("login_user")
+    else:
+        form = RegisterForm()
+
+    return render(request, "accounts/register-page.html", {"form": form})
 
 def login(request):
-    return None
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        print("Authenticated user:", user)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'accounts/login-page.html', {'error': 'Хэрэглэгчийн нэр эсвэл нууц үг буруу байна.'})
+    return render(request, template_name='accounts/login-page.html')
 
-def profile_details(request):
-    return None
+      
+User = get_user_model()
+@login_required
+def profile_details(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    pets = user.pet_set.all() if hasattr(user, "pet_set") else []
+    photos = user.photo_set.all() if hasattr(user, "photo_set") else []
+    context={
+        "profile_user": user,
+        "pets": pets,
+        "photos": photos,
+        "is_owner": request.user == user,
+    }
+    return render(request, 'accounts/profile-details-page.html',  context)
 
-def edit_profile(request):
-    return None
+
+@login_required
+def edit_profile(request, pk):
+    profile = get_object_or_404(UserProfile, pk=pk)
+
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_details', pk=pk)
+    else:
+        form = EditProfileForm(instance=profile)
+
+    return render(request, 'accounts/profile-edit-page.html', {'form': form})
+
+
 
 def delete_profile(request):
     return None
+
+def logout_user(request):
+    auth_logout(request)  # хэрэглэгчийн session устгана
+    return redirect('home')  # login хуудас руу буцаана (эсвэл өөр хуудас)

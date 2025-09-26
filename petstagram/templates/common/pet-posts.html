@@ -29,7 +29,7 @@
     <!-- Start Pet Photo -->
     <div class="imgBox" id="{{photo.id}}">
     <!-- Pet Photo URL Image -->
-    <img src="{{ photo.url }}"
+    <img src="{{ photo.photo.url }}"
             alt="post image" class="cover">
     </div>
     <!-- End Pet Photo -->
@@ -37,7 +37,7 @@
     <!-- Start Tagged Pets -->
     {% for pet in photo.tagged_pets.all %}
         <!-- Link to First Tagged Pet Details Page-->
-        <a href="{% url 'pet-details' "username" pet.slug %}">
+        <a href="{% url 'pet_details' "username" pet.slug %}">
             <p class="message">
                 <b>{{ pet.name }}</b>
             </p>
@@ -46,7 +46,7 @@
     <!-- End Tagged Pets -->
 
     <!-- Link to Photo Details Page -->
-    <a href="{% url 'photo-details' photo.pk %}">
+    <a href="{% url 'photo_details' photo.pk %}">
         <h4 class="details">See details</h4>
     </a>
 
@@ -56,7 +56,7 @@
     <!--Start Add comments section-->
     <div class="addComments">
         <!-- Form to add comment -->
-        <form action="{% url 'add-comment' photo.id %}" method="post">
+        <form action="{% url 'add_comment' photo.id %}" method="post">
             {% csrf_token %}
             {{ comment_form }}
             <button class="add-btn" type="submit">Add Comment</button>
