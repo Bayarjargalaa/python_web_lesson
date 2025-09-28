@@ -22,7 +22,7 @@
     padding: 5px 10px 5px 10px;
     border: none;
     border-radius: 3px;
-    color: white;
+    color: rgb(27, 20, 124);
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
@@ -138,12 +138,15 @@
 }
 
 label {
-    width: 100px;
+    width: 150px;
 }
+
+
 
 .edit-photo input, select, .edit-photo textarea, .label-input input {
     width: 300px !important;
 }
+
 .label-input {
     display: flex;
     margin-top: -10px;

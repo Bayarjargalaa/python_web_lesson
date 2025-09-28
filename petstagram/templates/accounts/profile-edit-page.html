@@ -3,24 +3,34 @@
 
 {% block content %}
 <!-- Starts Edit Profile Section -->
-<div class="edit-delete">
+<div class="edit-delete edit-photo">
     <h2>Edit Profile</h2>
 
     <!-- Start Edit Profile Form -->
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        {% if form.errors %}
-            <div class="error-message" style="color:red;">
-                Please fix the errors below.
-            </div>
-        {% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in user_form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.errors %}
+                <span style="color: red;">{{ field.errors }}</span>
+            {% endif %}
+        </p>
+    {% endfor %}
 
-        {{ form.as_p }}
+    {% for field in profile_form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.errors %}
+                <span style="color: red;">{{ field.errors }}</span>
+            {% endif %}
+        </p>
+    {% endfor %}
 
-        <!-- Edit Profile Button -->
-        <button class="edit-btn" type="submit">Edit</button>
-    </form>
+    <button type="submit">Хадгалах</button>
+</form>
     <!-- End Edit Profile Form -->
 </div>
 <!-- End Edit Profile Section -->

@@ -54,7 +54,7 @@
   <div class="pets">
     <div class="statuses">
       {% for pet in pets %}
-        <a href="{% url 'pet_details' pet.pk %}">
+        <a href="{% url 'pet_details' username=pet.owner.username pet_slug=pet.slug %}">
           <div class="head-pet">
             <div class="status">
               <div class="image">

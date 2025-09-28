@@ -4,7 +4,7 @@ from petstagram.accounts.forms import RegisterForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from petstagram.accounts.models import UserProfile
-from .forms import EditProfileForm
+from .forms import EditProfileForm, EditUserForm
 
 # Create your views here.
 def register(request):
@@ -51,18 +51,26 @@ def profile_details(request, pk):
 
 @login_required
 def edit_profile(request, pk):
-    profile = get_object_or_404(UserProfile, pk=pk)
+    user = get_object_or_404(User, pk=pk)
+    profile = get_object_or_404(UserProfile, user=user)
 
     if request.method == "POST":
-        form = EditProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile_details', pk=pk)
+        user_form = EditUserForm(request.POST, instance=user)
+        profile_form = EditProfileForm(request.POST, request.FILES, instance=profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('profile_details', pk=user.pk)
     else:
-        form = EditProfileForm(instance=profile)
+        user_form = EditUserForm(instance=user)
+        profile_form = EditProfileForm(instance=profile)
 
-    return render(request, 'accounts/profile-edit-page.html', {'form': form})
-
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'accounts/profile-edit-page.html', context)
 
 
 def delete_profile(request):

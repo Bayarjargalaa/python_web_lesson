@@ -12,7 +12,22 @@ class RegisterForm(UserCreationForm):
 
 
 
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        labels = {
+            'username': 'Хэрэглэгчийн нэр',
+            'email': 'И-мэйл',
+            'first_name': 'Нэр',
+            'last_name': 'Овог',
+        }
+
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['gender', 'last_name', 'first_name', 'email', 'profile_picture']
+        fields = ['profile_picture', 'gender']  # Чиний profile-д байгаа талбарууд
+        labels = {
+            'profile_picture': 'Профайл зураг',
+            'gender': 'Хүйс',
+        }

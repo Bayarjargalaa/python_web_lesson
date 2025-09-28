@@ -1,21 +1,5 @@
 {% load static%}
 
-{% comment %} {% for pet in all_pets %}
-    <li class="pet-item">
-        {# Хэрэв pet.pet_photo нь URLField (стринг) use this: #}
-        {% if pet.pet_photo %}
-            <img src="{{ pet.pet_photo }}" alt="{{ pet.name }}" width="150">
-        {% else %}
-            <img src="{% static 'images/default-pet.png' %}" alt="no image" width="150">
-        {% endif %}
-        <div class="pet-meta">
-            <strong>{{ pet.name }}</strong> — Амьтны нэр: {{ pet.owner.username }}
-        </div>
-    </li>
-{% endfor %} {% endcomment %}
-
-
-
 {% for photo in all_photos %}
 <!-- Start User Details and Image Location -->
     <!-- if the photo has location -->
@@ -27,7 +11,7 @@
 
 
     <!-- Start Pet Photo -->
-    <div class="imgBox" id="{{photo.id}}">
+    <div class="imgBx" id="{{photo.id}}">
     <!-- Pet Photo URL Image -->
     <img src="{{ photo.photo.url }}"
             alt="post image" class="cover">
@@ -37,7 +21,7 @@
     <!-- Start Tagged Pets -->
     {% for pet in photo.tagged_pets.all %}
         <!-- Link to First Tagged Pet Details Page-->
-        <a href="{% url 'pet_details' "username" pet.slug %}">
+        <a href="{% url 'pet_details' username=pet.owner.username pet_slug=pet.slug %}">
             <p class="message">
                 <b>{{ pet.name }}</b>
             </p>
@@ -66,36 +50,32 @@
     <!-- End Add comments section-->
                 ...
     <!-- Start Like and Share Buttons -->
-    <div class="bottom">
-        <div class="actionBtns">
+        <div class="bottom">
+          <div class="actionBtns">
             <div class="left">
-                <!-- Start Like Button -->
-                <span class="heart">
-                    <a href="{% url 'like' photo.id %}">
-                        <!-- if user has liked the photo -->
-                        {% if photo.like_set.all %}
-                            <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
-
-                        <!-- else -->
-                        {% else %}
-                            <i class="fa-regular fa-heart"></i>
-                        {% endif %}                   
-                                ...
-                <!-- End Like Button -->
+              <span class="heart">
+                <a href="{% url 'like' photo.id %}">
+                  {% if photo.like_set.all %}
+                  <i class="fa-solid fa-heart" style="color:#ed4040;"></i>
+                  {% else %}
+                  <i class="fa-regular fa-heart"></i>
+                  {% endif %}
                 </a>
-                </span>
-    <!-- End Like and Share Buttons -->
+              </span>
+              <a class="share" href="{% url 'share' photo.id %}">
+                <i class="fa-solid fa-share"></i>
+              </a>
             </div>
+          </div>
         </div>
-    </div>
     <!-- Number of Likes per Photo -->
     <p class="likes">{{ photo.like_set.count }} likes</p>
 
-    <!-- Start Share Button -->
+    {% comment %} <!-- Start Share Button -->
     <a href="{% url 'share' photo.id %}">
         <i class="fa-solid fa-share"></i>
     </a>
-    <!-- End Share Button -->
+    <!-- End Share Button --> {% endcomment %}
 
 
 {% endfor %}

@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+{% csrf_token %}
     <div class="container">
         <div class="col-9">
 
@@ -27,7 +28,11 @@
             <!-- Link to User Profile Details Page -->
             <a href="#">
                 <!-- IF user has first name and last name -->
-                Diyan Kalaydzhiev
+                {% if owner or photo.user.last_name %}
+                    {{ photo.user.first_name }} {{ photo.user.last_name }}
+                {% else %}
+                    {{ photo.owner }}
+                {% endif %}
                 <!-- else -->
                 <!-- show user username -->
             </a>
@@ -42,13 +47,13 @@
             <div class="edit-delete-btns">
 
                 <!-- Link to Edit Pet Photo Page -->
-                <a href="{% url 'photo-edit' photo.pk %}">
+                <a href="{% url 'photo_edit' photo.pk %}">
                     <img class="edit-img" src="{% static '/images/edit-pen-icon-6.jpg' %}"
                          alt="edit button">
                 </a>
 
                 <!-- Link to Delete Pet Photo Page -->
-                <a href="{% url 'photo-delete' photo.pk %}">
+                <a href="{% url 'photo_delete' photo.pk %}">
                     <img class="bin-img" src="{% static '/images/icon-remove-22.jpg' %}"
                          alt="bin button">
                 </a>
@@ -62,7 +67,7 @@
 </div>
 
         <!-- Start Pet Photo -->
-        <div class="imgBox" id="{{photo.id}}">
+        <div class="imgBx" id="{{photo.id}}">
             <!-- Pet Photo URL Image -->
             <img src="{{ photo.photo.url }}"
                  alt="post image" class="cover">
@@ -106,7 +111,7 @@
            <!-- Start Tagged Pets Section-->
            {% for pet in photo.tagged_pets.all %}
                <!-- Link to First Tagged Pet Details Page -->
-               <a href="{% url 'pet-details' "username" pet.slug %}">
+               <a href="{% url 'pet_details' username=pet.owner.username pet_slug=pet.slug %}">
                    <p class="message">
                        <b>{{ pet.name }}</b>
                    </p>
