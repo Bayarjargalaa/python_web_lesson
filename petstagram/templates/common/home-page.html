@@ -4,10 +4,11 @@
 
     <div class="container">
         <div class="col-9">
-
+            
             <!-- Start Searchbar Form -->
             <form class="searchbar" method="post">
-                <input type="text" placeholder="Search by pet name...">
+                {% csrf_token %}
+                <input type="text" placeholder="Search by pet name..." name="pet_name" value="{{ search_form.pet_name.value }}">
                 <button>
                     <img src="{% static 'images/search.png' %}" height="18" alt="img2">
                 </button>
@@ -19,8 +20,35 @@
             {% include 'common/pet-posts.html' %}
 
             <!-- End Pet Photos Post Section -->
-
-        </div>
+            <!-- Start Pagination Section -->
+            <div class="pagination">
+                <span class="current">
+                    Page{{all_photos.number}} of {{all_photos.paginator.num_pages}}
+                </span>
+                <span class="step-links-buttons">
+                    <!--if there are previous and next photos-->
+                    {% if all_photos.has_previous and all_photos.has_next %}
+                        <a href="?page{{ all_photos.previous_page_number }}">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                        <a href="?page={{ all_photos.next_page_number }}">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    <!--if there are only previous photos-->
+                    {% elif all_photos.has_previous %}
+                        <a href="?page{{ all_photos.previous_page_number }}">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                    <!--if there are only next photos-->
+                    {% elif all_photos.has_next %}
+                        <a href="?page={{ all_photos.next_page_number }}">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+            <!-- End Pagination Section -->
+        </div>        
     </div>
 
 {% endblock %}
